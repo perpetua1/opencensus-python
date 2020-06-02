@@ -1,3 +1,14 @@
+Perpetua Mods
+=============
+- Patched async transporter.
+- Used dependency that exists in pypi
+
+.. code:: shell
+  tox -e py38
+  python setup.py sdist
+  python setup.py develop
+
+
 OpenCensus - A stats collection and distributed tracing framework
 =================================================================
 

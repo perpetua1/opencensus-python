@@ -18,9 +18,9 @@ from setuptools import find_packages, setup
 exec(open('opencensus/common/version/__init__.py').read())
 
 setup(
-    name='opencensus',
+    name='opencensus-perpetua',
     version=__version__,  # noqa
-    author='OpenCensus Authors',
+    author='OpenCensus Authors - perpetua mod',
     author_email='census-developers@googlegroups.com',
     classifiers=[
         'Intended Audience :: Developers',
@@ -40,7 +40,7 @@ setup(
     include_package_data=True,
     long_description=open('README.rst').read(),
     install_requires=[
-        'opencensus-context == 0.2.dev0',
+        'opencensus-context >= 0.1.1',
         'google-api-core >= 1.0.0, < 2.0.0',
     ],
     extras_require={},

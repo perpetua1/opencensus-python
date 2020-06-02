@@ -97,6 +97,12 @@ class _Worker(object):
         while True:
             items = self._get_items()
             data = []
+            ###Perpetua Mod Start####
+            # See also: https://github.com/census-instrumentation/opencensus-python/issues/182#issuecomment-395212069
+            # Mod data to be grouped data
+            current_group = None
+            current_group_trace_id  = None
+            ###Perpetua Mod End####
 
             for item in items:
                 if item is _WORKER_TERMINATOR:
@@ -104,18 +110,29 @@ class _Worker(object):
                     # Continue processing items, don't break, try to process
                     # all items we got back before quitting.
                 else:
-                    data.extend(item)
+                    ###Perpetua Mod Start####
+                    # data.extend(item)
+                    for actual_item in item:
+                        if current_group_trace_id is None or actual_item.context.trace_id != current_group_trace_id:
+                            current_group_trace_id = actual_item.context.trace_id
+                            current_group = []
+                            data.append(current_group)
+                        current_group.append(actual_item)
+                    ###Perpetua Mod End####
+
 
             if data:
-                try:
-                    self.exporter.emit(data)
-                except Exception:
-                    logger.exception(
-                        '%s failed to emit data.'
-                        'Dropping %s objects from queue.',
-                        self.exporter.__class__.__name__,
-                        len(data))
-                    pass
+                for current_group in data:
+                    if current_group:
+                        try:
+                            self.exporter.emit(current_group)
+                        except Exception:
+                            logger.exception(
+                                '%s failed to emit data.'
+                                'Dropping %s objects from queue.',
+                                self.exporter.__class__.__name__,
+                                len(current_group))
+                            pass
 
             for _ in range(len(items)):
                 self._queue.task_done()
@@ -145,6 +162,9 @@ class _Worker(object):
             # auto-collection.
             execution_context.set_is_exporter(True)
             self._thread.start()
+            ### Perpetau Mod Start
+            # add in https://github.com/census-instrumentation/opencensus-python/pull/893
+            execution_context.set_is_exporter(False)
             atexit.register(self._export_pending_data)
 
     def stop(self):

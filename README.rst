@@ -7,6 +7,7 @@ Perpetua Mods
   tox -e py38
   python setup.py sdist
   python setup.py develop
+  twine upload dist/*
 
 
 OpenCensus - A stats collection and distributed tracing framework

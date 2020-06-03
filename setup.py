@@ -17,11 +17,17 @@ from setuptools import find_packages, setup
 
 exec(open('opencensus/common/version/__init__.py').read())
 
+
+name='renamedproject'
+author='origauthor, me',
+url='http://myfavoriterepository.com/me/renamedproject'
+
+
 setup(
     name='opencensus-perpetua',
     version=__version__,  # noqa
-    author='OpenCensus Authors - perpetua mod',
-    author_email='census-developers@googlegroups.com',
+    author='OpenCensus Authors - Perpetua Authors',
+    author_email='team@perpetualabs.com',
     classifiers=[
         'Intended Audience :: Developers',
         'Development Status :: 4 - Beta',
@@ -36,7 +42,7 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
-    description='A stats collection and distributed tracing framework',
+    description='A stats collection and distributed tracing framework (forked to play well with python/gunicorn/flex/appE)',
     include_package_data=True,
     long_description=open('README.rst').read(),
     install_requires=[
@@ -47,5 +53,5 @@ setup(
     license='Apache-2.0',
     packages=find_packages(exclude=('tests',)),
     namespace_packages=[],
-    url='https://github.com/census-instrumentation/opencensus-python',
+    url='https://github.com/perpetua1/opencensus-python',
 )
